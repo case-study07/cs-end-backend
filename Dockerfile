@@ -1,9 +1,11 @@
-FROM node:14.17.6-alpine as base-node
-RUN apk upgrade && apk add git bash
+FROM node:14.17.6-alpine AS base-node
 WORKDIR /app
-
-FROM base-node
-RUN apk add yarn
 COPY ./package.json .
 RUN yarn install
+
+FROM base-node AS dev
+RUN apk upgrade && apk add git bash
 COPY . .
+
+EXPOSE 9000
+ENV PORT 9000
